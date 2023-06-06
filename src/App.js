@@ -6,7 +6,7 @@ import Teacher from './views/Teacher/Teacher.js';
 import { useState } from 'react';
 
 function App() {
-    const [status, setStatus] = useState('student');
+    const [status, setStatus] = useState('teacher');
 
     return (
         <div className="App">

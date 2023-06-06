@@ -49,32 +49,6 @@
         }
     }
 
-    .nav {
-        height: 60px;
-        color: #000;
-        padding: 0 100px;
-        display: flex;
-
-        .nav-item {
-            line-height: 60px;
-            font-size: 16px;
-            padding: 0 20px;
-            cursor: pointer;
-            text-decoration: none;
-            color: #000;
-        }
-
-        .nav-item:hover {
-            color: #fff;
-            background: #AA1D2B;
-        }
-
-        .nav-item-active {
-            color: #fff;
-            background: #AA1D2B;
-        }
-    }
-
     .body {
         padding: 0 100px;
 
@@ -150,6 +124,7 @@
                         .day-item-active:hover {
                             background-color: #AA1D2B;
                             color: #fff;
+                            transition: background-color 0.45s ease-in-out, color 0.45s ease-in-out;
                             cursor: pointer;
                         }
 

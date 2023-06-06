@@ -1,0 +1,51 @@
+.inforname-teacher {
+    border: 2px solid #ccc;
+    margin: 50px;
+    border-radius: 4px;
+    padding: 30px;
+    display: flex;
+
+    .left {
+        text-align: left;
+        width: 50%;
+
+        .item {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 10px;
+        }
+    }
+
+    .right {
+        width: 50%;
+        text-align: center;
+        align-items: center;
+        display: flex;
+        border-left: 2px solid #ccc;
+
+        .outline-btn {
+            width: 100%;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+
+            .btn {
+                margin: 30px;
+                display: inline-block;
+                padding: 0 14px;
+                height: 40px;
+                line-height: 40px;
+                border-radius: 6px;
+                font-weight: 600;
+                background-color: #bbbbbb;
+                cursor: not-allowed;
+            }
+
+            .active {
+                cursor: pointer !important;
+                background-color: #AA1D2B !important;
+            }
+        }
+    }
+
+}

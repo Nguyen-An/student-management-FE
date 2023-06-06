@@ -2,9 +2,25 @@ import './Student.scss';
 import Schedule from '../../components/Students/Schedule/Schedule';
 import LearnOutComes from '../../components/Students/LearnOutComes/LearnOutComes';
 import Notification from '../../components/Students/Notification/Notification';
-import { BrowserRouter as Router, Route, Routes, NavLink } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Nav from '../../components/Nav/Nav';
 
 function Student() {
+    const listTo = [
+        {
+            to: '/',
+            text: 'Thời khóa biểu',
+        },
+        {
+            to: '/learn-out-comes',
+            text: 'Kết quả học tập',
+        },
+        {
+            to: '/notification',
+            text: 'Thông báo',
+        },
+    ];
+
     return (
         <>
             <Router>
@@ -32,26 +48,7 @@ function Student() {
                             <div className="current-time">Tuần 35 (Tuần học thứ 11): 29/05 - 03/06 </div>
                         </div>
                     </div>
-                    <div className="nav">
-                        <NavLink
-                            to="/"
-                            className={(navData) => (navData.isActive ? 'nav-item-active nav-item' : 'none nav-item')}
-                        >
-                            Thời khóa biểu
-                        </NavLink>
-                        <NavLink
-                            to="/learn-out-comes"
-                            className={(navData) => (navData.isActive ? 'nav-item-active nav-item' : 'none nav-item')}
-                        >
-                            Kết quả học tập
-                        </NavLink>
-                        <NavLink
-                            to="/notification"
-                            className={(navData) => (navData.isActive ? 'nav-item-active nav-item' : 'none nav-item')}
-                        >
-                            Thông báo
-                        </NavLink>
-                    </div>
+                    <Nav listTo={listTo} />
                     <div className="body">
                         <Routes>
                             <Route path="/" element={<Schedule />} />

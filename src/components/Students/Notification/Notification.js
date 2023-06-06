@@ -1,7 +1,10 @@
-function Notification() {
+import CreateNotification from './CreateNotification';
+
+function Notification({ teacher = false }) {
     return (
         <>
             <div className="notification">
+                {teacher && <CreateNotification />}
                 <div className="title">Thông báo</div>
                 <div className="notification-items">
                     <div className="item">
