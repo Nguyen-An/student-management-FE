@@ -1,25 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+
+import Login from './views/Login/Login.js';
+import Student from './views/Student/Student.js';
+import Teacher from './views/Teacher/Teacher.js';
+import { useState } from 'react';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [status, setStatus] = useState('student');
+
+    return (
+        <div className="App">
+            {status === 'login' && <Login />}
+            {status === 'student' && <Student />}
+            {status === 'teacher' && <Teacher />}
+        </div>
+    );
 }
 
 export default App;
