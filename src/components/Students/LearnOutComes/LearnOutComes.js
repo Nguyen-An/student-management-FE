@@ -1,4 +1,52 @@
-function LearnOutComes() {
+import axios from 'axios';
+import { useEffect, useLayoutEffect, useState } from 'react';
+
+function LearnOutComes({ formatTime, allClass, allClassRegistration }) {
+    // danh sách giáo viên
+    const [listTeacher, setListTeacher] = useState([]);
+    // const [numberOfAbsences, setNumberOfAbsences] = useState([]);
+
+    useEffect(() => {
+        // let token = localStorage.getItem('token');
+
+        axios
+            .get('http://localhost:8080/user/teachers')
+            .then((response) => {
+                setListTeacher(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        // let numberOfAbsencesNew = [];
+
+        // allClassRegistration.forEach((classRegistration) => {
+        //     axios
+        //         .get(
+        //             `http://localhost:8080/attendance-status-false?attendancestatuscode=${classRegistration.attendanceStatusCode}`,
+        //             {
+        //                 headers: {
+        //                     Authorization: 'Token ' + token,
+        //                 },
+        //             },
+        //         )
+        //         .then((response) => {
+        //             numberOfAbsencesNew.push(response.data);
+        //         });
+        // });
+
+        // setNumberOfAbsences(numberOfAbsencesNew);
+    }, []);
+
+    // Lấy tên giáo viên dựa trên userCode
+    const getTeacherNameByTeacherCode = (teacherCode) => {
+        if (listTeacher.length > 0) {
+            return listTeacher.find((teacher) => teacher.userCode === teacherCode).userName;
+        } else {
+            return 'Không tìm thấy giáo viên trong danh sách';
+        }
+    };
+
     return (
         <>
             <div className="learn-outcomes">
@@ -16,24 +64,20 @@ function LearnOutComes() {
                         </div>
                     </div>
                     <div className="tbody">
-                        <div className="tr">
-                            <div className="td">1</div>
-                            <div className="td">TH12342</div>
-                            <div className="td">Tin học đại cương</div>
-                            <div className="td">TC-101</div>
-                            <div className="td">t4 6h45 - 10h20</div>
-                            <div className="td">2</div>
-                            <div className="td">Lê Thị Hoa</div>
-                        </div>
-                        <div className="tr">
-                            <div className="td">2</div>
-                            <div className="td">TH12342</div>
-                            <div className="td">Công nghệ Web</div>
-                            <div className="td">TC-101</div>
-                            <div className="td">t4 6h45 - 10h20</div>
-                            <div className="td">2</div>
-                            <div className="td">Ngô Bá Lâm</div>
-                        </div>
+                        {allClass.map((classObj, index) => (
+                            <div className="tr" key={index}>
+                                <div className="td">{index + 1}</div>
+                                <div className="td">{classObj.termCode}</div>
+                                <div className="td">{classObj.termName}</div>
+                                <div className="td">TC-101</div>
+                                <div className="td">
+                                    thứ {classObj.day} - {formatTime(classObj.startTime)} -{' '}
+                                    {formatTime(classObj.endTime)}
+                                </div>
+                                {/* <div className="td">{numberOfAbsences[index]}</div> */}
+                                <div className="td">{getTeacherNameByTeacherCode(classObj.teacherCode)}</div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

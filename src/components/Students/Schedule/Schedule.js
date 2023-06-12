@@ -1,10 +1,18 @@
 import { useEffect, useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import InforClass from '../InforClass/InforClass';
+import axios from 'axios';
 
 function Schedule() {
     // Các chỉ mục trang web (1: thời khóa biểu, 2: popup, 3: chi tiết 1 lớp)
     const [menu, setMenu] = useState(1);
+    // Danh sách các lớp học trong 1 ngày (Hiện trong popup)
+    const [listClass, setListClass] = useState([]);
+    // Ngày đang lựa chọn
+    const [daySelect, setDaySelect] = useState(0);
+
+    // Class đang lựa chọn: truyền vào inforClass
+    const [classSelect, setClassSelect] = useState({});
 
     // Thông tin về ngày hôm nay (ngày tháng nằm) => kiểm tra xem nếu thông tin đang hiển thị là ngày hôm nay sẽ active
     const todayDay = new Date().getDate();
@@ -114,10 +122,31 @@ function Schedule() {
         }
     };
 
-    // Thay đổi chỉ mục trang web (1: thời khóa biểu, 2: popup, 3: chi tiết 1 lớp)
-    const handleChangeMenu = (value) => {
+    // Thay đổi chỉ mục trang web value (1: thời khóa biểu, 2: popup, 3: chi tiết 1 lớp), day: thứ của ngày đó, item ngày lựa chọn
+    const handleChangeMenu = (value, day, item) => {
         setMenu(value);
+        handleGetInfoClassOnDay(day);
+        setDaySelect(item);
     };
+
+    // Thay đổi thông tin popup: hiển thị đúng thông tin các môn học trong ngày hôm đó
+    const handleGetInfoClassOnDay = (day) => {
+        try {
+            const token = localStorage.getItem('token');
+            axios
+                .get(`http://localhost:8080/student/class-on-day?day=${day}`, {
+                    headers: { Authorization: 'Token ' + token },
+                })
+                .then((response) => {
+                    setListClass(response.data.data);
+                });
+        } catch (error) {}
+    };
+
+    const handleInforClass = (classOnDay) => {
+        setClassSelect(classOnDay);
+    };
+
     return (
         <>
             {(menu === 1 || menu === 2) && (
@@ -166,7 +195,7 @@ function Schedule() {
                                         }`}
                                         onClick={() => {
                                             if (!item) return;
-                                            handleChangeMenu(2);
+                                            handleChangeMenu(2, (index % 7) + 1, item);
                                         }}
                                     >
                                         {item === 0 ? '' : item}
@@ -178,32 +207,42 @@ function Schedule() {
                     {menu === 2 && (
                         <div className="background-popup">
                             <div className="popup">
-                                <div className="btn-close" onClick={() => handleChangeMenu(1)}>
+                                <div className="btn-close" onClick={() => handleChangeMenu(1, 0, 0)}>
                                     <AiOutlineClose />
                                 </div>
-                                <div className="day">Ngày 30 tháng 5</div>
+                                <div className="day">
+                                    Ngày {daySelect} tháng {month}
+                                </div>
                                 <div className="items">
-                                    <div className="item" onClick={() => handleChangeMenu(3)}>
-                                        <div className="time">
-                                            <div className="time-start">6:45</div>
-                                            <div className="time-end">10:45</div>
+                                    {listClass.length === 0 ? (
+                                        <div className="item">
+                                            <div className="subject">Không có lớp học trong ngày</div>
                                         </div>
-                                        <div className="subject">Tin học đại cương</div>
-                                    </div>
-                                    <div className="item">
-                                        <div className="time">
-                                            <div className="time-start">6:45</div>
-                                            <div className="time-end">10:45</div>
-                                        </div>
-                                        <div className="subject">Tin học đại cương</div>
-                                    </div>
+                                    ) : (
+                                        listClass.map((classOnDay, index) => (
+                                            <div
+                                                className="item"
+                                                onClick={() => {
+                                                    handleChangeMenu(3, 0, 0);
+                                                    handleInforClass(classOnDay);
+                                                }}
+                                                key={index}
+                                            >
+                                                <div className="time">
+                                                    <div className="time-start">{classOnDay.startTime}</div>
+                                                    <div className="time-end">{classOnDay.endTime}</div>
+                                                </div>
+                                                <div className="subject">{classOnDay.termName}</div>
+                                            </div>
+                                        ))
+                                    )}
                                 </div>
                             </div>
                         </div>
                     )}
                 </div>
             )}
-            {menu === 3 && <InforClass />}
+            {menu === 3 && <InforClass classSelect={classSelect} />}
         </>
     );
 }

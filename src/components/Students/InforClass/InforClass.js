@@ -1,25 +1,34 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PopupAttendance from '../PopupAttendance/PopupAttendance';
+import axios from 'axios';
 
-function InforClass() {
+function InforClass({ classSelect }) {
     // Trạng thái popup khi ấn điểm danh
     const [statusPopup, setStatusPopup] = useState(false);
-
+    const [inforTeacher, setInForTeacher] = useState({});
     // Thay đổi trang thái khi bấm điểm danh hoặc tắt thông báo
     const changePopupMessage = () => {
         setStatusPopup(!statusPopup);
     };
 
+    useEffect(() => {
+        axios.get(`http://localhost:8080/user/${classSelect.teacherCode}`).then((response) => {
+            setInForTeacher(response.data[0]);
+        });
+    }, [classSelect]);
+
     return (
         <>
             <div className="inforname">
                 <div className="left">
-                    <div className="item">IT2023: Tin học đại cương</div>
-                    <div className="item">Mã lớp: 123456</div>
-                    <div className="item">Mã học phần: MU12123</div>
-                    <div className="item">Giáo viên: Lê Thị Hoa</div>
-                    <div className="item">Sỹ số: 44 học sinh</div>
-                    <div className="item">Thời gian: 6h45 - 11h10</div>
+                    <div className="item">IT2023: {classSelect.termName}</div>
+                    <div className="item">Mã lớp: {classSelect.classCode}</div>
+                    <div className="item">Mã học phần: {classSelect.termCode}</div>
+                    <div className="item">Giáo viên: {inforTeacher.userName}</div>
+                    <div className="item">Sỹ số: {classSelect.number} học sinh</div>
+                    <div className="item">
+                        Thời gian: {classSelect.startTime} - {classSelect.endTime}
+                    </div>
                     <div className="item">Số lần vắng: 3</div>
                 </div>
                 <div className="right">

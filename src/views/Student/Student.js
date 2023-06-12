@@ -4,8 +4,14 @@ import LearnOutComes from '../../components/Students/LearnOutComes/LearnOutComes
 import Notification from '../../components/Students/Notification/Notification';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Nav from '../../components/Nav/Nav';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function Student() {
+    // Danh sách các môn học mà học sinh học trong kỳ
+    const [allClass, setAllClass] = useState([]);
+    const [allClassRegistration, setAllClassRegistration] = useState([]);
+
     const listTo = [
         {
             to: '/',
@@ -20,6 +26,39 @@ function Student() {
             text: 'Thông báo',
         },
     ];
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+
+        axios
+            .get('http://localhost:8080/student/all-class-by-studentcode', {
+                headers: { Authorization: 'Token ' + token },
+            })
+            .then((response) => {
+                setAllClass(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        axios
+            .get('http://localhost:8080/student/all-class-registration-by-studentcode', {
+                headers: { Authorization: 'Token ' + token },
+            })
+            .then((response) => {
+                setAllClassRegistration(response.data);
+            });
+    }, []);
+
+    // Format thời gian
+    const formatTime = (time) => {
+        const parts = time.split(':');
+        if (parts.length === 3) {
+            const formattedTime = `${parts[0]}:${parts[1]}`;
+            return formattedTime;
+        }
+        return time; // Trả về thời gian không đúng định dạng nếu không phải "hh:mm:ss"
+    };
 
     return (
         <>
@@ -52,8 +91,17 @@ function Student() {
                     <div className="body">
                         <Routes>
                             <Route path="/" element={<Schedule />} />
-                            <Route path="/learn-out-comes" element={<LearnOutComes />} />
-                            <Route path="/notification" element={<Notification />} />
+                            <Route
+                                path="/learn-out-comes"
+                                element={
+                                    <LearnOutComes
+                                        formatTime={formatTime}
+                                        allClass={allClass}
+                                        allClassRegistration={allClassRegistration}
+                                    />
+                                }
+                            />
+                            <Route path="/notification" element={<Notification allClass={allClass} />} />
                         </Routes>
                     </div>
                 </div>
