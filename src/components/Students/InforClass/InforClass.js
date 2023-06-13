@@ -1,46 +1,47 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import PopupAttendance from '../PopupAttendance/PopupAttendance';
-import axios from 'axios';
+import useFetch from '../../../hooks/useFetch';
+import { formatTime } from '../../../functionCusom/functionCusom.js';
 
 function InforClass({ classSelect }) {
     // Trạng thái popup khi ấn điểm danh
     const [statusPopup, setStatusPopup] = useState(false);
-    const [inforTeacher, setInForTeacher] = useState({});
+
+    const { listData: classInfo, loading } = useFetch(
+        `http://localhost:8080/student/subject-student/${classSelect.classCode}`,
+    );
+
     // Thay đổi trang thái khi bấm điểm danh hoặc tắt thông báo
     const changePopupMessage = () => {
         setStatusPopup(!statusPopup);
     };
 
-    useEffect(() => {
-        axios.get(`http://localhost:8080/user/${classSelect.teacherCode}`).then((response) => {
-            setInForTeacher(response.data[0]);
-        });
-    }, [classSelect]);
-
     return (
         <>
-            <div className="inforname">
-                <div className="left">
-                    <div className="item">IT2023: {classSelect.termName}</div>
-                    <div className="item">Mã lớp: {classSelect.classCode}</div>
-                    <div className="item">Mã học phần: {classSelect.termCode}</div>
-                    <div className="item">Giáo viên: {inforTeacher.userName}</div>
-                    <div className="item">Sỹ số: {classSelect.number} học sinh</div>
-                    <div className="item">
-                        Thời gian: {classSelect.startTime} - {classSelect.endTime}
-                    </div>
-                    <div className="item">Số lần vắng: 3</div>
-                </div>
-                <div className="right">
-                    <div className="outline-btn">
-                        <div className="btn active" onClick={changePopupMessage}>
-                            {' '}
-                            Điểm danh
+            {loading === 2 && (
+                <div className="inforname">
+                    <div className="left">
+                        <div className="item">IT2023: {classInfo.termName}</div>
+                        <div className="item">Mã lớp: {classInfo.classCode}</div>
+                        <div className="item">Mã học phần: {classInfo.termCode}</div>
+                        <div className="item">Giáo viên: {classInfo.teacherName}</div>
+                        <div className="item">
+                            Thời gian: {formatTime(classInfo.startTime)} - {formatTime(classInfo.endTime)}
                         </div>
-                        <div className="btn "> Bài tập</div>
+                        <div className="item">Số lần vắng: {classInfo.countAttendanceFalse}</div>
+                    </div>
+                    <div className="right">
+                        <div className="outline-btn">
+                            <div className="btn active" onClick={changePopupMessage}>
+                                {' '}
+                                Điểm danh
+                            </div>
+                            <div className="btn "> Bài tập</div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
+
             {statusPopup && (
                 <div className="popup-attendance">
                     <PopupAttendance changePopupMessage={changePopupMessage} />

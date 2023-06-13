@@ -5,13 +5,10 @@ import Notification from '../../components/Students/Notification/Notification';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Nav from '../../components/Nav/Nav';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import useFetch from '../../hooks/useFetch';
 
 function Student() {
-    // Danh sách các môn học mà học sinh học trong kỳ
-    const [allClass, setAllClass] = useState([]);
-    const [allClassRegistration, setAllClassRegistration] = useState([]);
-
+    useEffect(() => {}, []);
     const listTo = [
         {
             to: '/',
@@ -26,29 +23,6 @@ function Student() {
             text: 'Thông báo',
         },
     ];
-
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-
-        axios
-            .get('http://localhost:8080/student/all-class-by-studentcode', {
-                headers: { Authorization: 'Token ' + token },
-            })
-            .then((response) => {
-                setAllClass(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-
-        axios
-            .get('http://localhost:8080/student/all-class-registration-by-studentcode', {
-                headers: { Authorization: 'Token ' + token },
-            })
-            .then((response) => {
-                setAllClassRegistration(response.data);
-            });
-    }, []);
 
     // Format thời gian
     const formatTime = (time) => {
@@ -91,17 +65,8 @@ function Student() {
                     <div className="body">
                         <Routes>
                             <Route path="/" element={<Schedule />} />
-                            <Route
-                                path="/learn-out-comes"
-                                element={
-                                    <LearnOutComes
-                                        formatTime={formatTime}
-                                        allClass={allClass}
-                                        allClassRegistration={allClassRegistration}
-                                    />
-                                }
-                            />
-                            <Route path="/notification" element={<Notification allClass={allClass} />} />
+                            <Route path="/learn-out-comes" element={<LearnOutComes formatTime={formatTime} />} />
+                            <Route path="/notification" element={<Notification />} />
                         </Routes>
                     </div>
                 </div>

@@ -1,8 +1,13 @@
 import { useEffect, useState } from 'react';
 import CreateNotification from './CreateNotification';
 import axios from 'axios';
+import useFetch from '../../../hooks/useFetch';
+import { formatDate } from '../../../functionCusom/functionCusom.js';
 
-function Notification({ allClass, teacher = false }) {
+function Notification({ teacher = false }) {
+    // Danh sách các môn học mà học sinh học trong kỳ
+    const { listData: allClass, loading } = useFetch('http://localhost:8080/student/all-class-by-studentcode');
+
     const [listNotification, setListNotification] = useState([]);
 
     useEffect(() => {
@@ -16,16 +21,6 @@ function Notification({ allClass, teacher = false }) {
                 setListNotification(response.data);
             });
     }, []);
-
-    // Format thời gian
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const formattedDate = `${year}-${month}-${day}`;
-        return formattedDate;
-    };
 
     // lấy tên lớp theo mã lớp
     const getClassNameByClassCode = (classCode) => {
