@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import InforClass from '../InforClass/InforClass';
 import axios from 'axios';
+import { formatTime } from '../../../functionCusom/functionCusom.js';
 
 function Schedule() {
     // Các chỉ mục trang web (1: thời khóa biểu, 2: popup, 3: chi tiết 1 lớp)
@@ -229,8 +230,8 @@ function Schedule() {
                                                 key={index}
                                             >
                                                 <div className="time">
-                                                    <div className="time-start">{classOnDay.startTime}</div>
-                                                    <div className="time-end">{classOnDay.endTime}</div>
+                                                    <div className="time-start">{formatTime(classOnDay.startTime)}</div>
+                                                    <div className="time-end">{formatTime(classOnDay.endTime)}</div>
                                                 </div>
                                                 <div className="subject">{classOnDay.termName}</div>
                                             </div>

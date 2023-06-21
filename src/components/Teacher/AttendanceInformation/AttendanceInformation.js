@@ -1,13 +1,37 @@
+import { useState } from 'react';
+import useFetch from '../../../hooks/useFetch';
 import './AttendanceInformation.scss';
 
-function AttendanceInformation() {
+function AttendanceInformation({ classObj }) {
+    const [inputLessionNumber, setInputLessionNumber] = useState();
+    const [lessionNumber, setLessionNumber] = useState(1);
+
+    const { listData: listStudent, loading } = useFetch(
+        `http://localhost:8080/teacher/class/students-attendance-on-lession?classCode=${classObj.classCode}&lessionNumber=${lessionNumber}`,
+    );
+
+    const handleChangeLession = () => {
+        if (inputLessionNumber !== 0) {
+            setLessionNumber(inputLessionNumber);
+        }
+    };
+
     return (
         <>
             <div className="attendance-information">
                 <div className="options">
                     <div className="title-option">Buổi học: </div>
-                    <input type="number" min="1" max="100" placeholder="1" />
-                    <div className="btn-submit">Xác nhận</div>
+                    <input
+                        type="number"
+                        min="1"
+                        max="100"
+                        placeholder="1"
+                        value={inputLessionNumber}
+                        onChange={(e) => setInputLessionNumber(e.target.value)}
+                    />
+                    <div className="btn-submit" onClick={handleChangeLession}>
+                        Xác nhận
+                    </div>
                 </div>
                 <div className="list-student">
                     <div className="list-tilte">Danh sách sinh viên:</div>
@@ -19,28 +43,20 @@ function AttendanceInformation() {
                             <div className="colum">Trạng thái</div>
                             <div className="colum">Hành động</div>
                         </div>
-                        <div className="item">
-                            <div className="colum">1</div>
-                            <div className="colum">20193987</div>
-                            <div className="colum">Nguyễn Văn An</div>
-                            <div className="colum">
-                                <input type="checkbox" />
-                            </div>
-                            <div className="colum">
-                                <div className="btn">Lưu</div>
-                            </div>
-                        </div>
-                        <div className="item">
-                            <div className="colum">1</div>
-                            <div className="colum">20193987</div>
-                            <div className="colum">Nguyễn Văn An</div>
-                            <div className="colum">
-                                <input type="checkbox" />
-                            </div>
-                            <div className="colum">
-                                <div className="btn">Lưu</div>
-                            </div>
-                        </div>
+                        {loading === 2 &&
+                            listStudent.map((item, index) => (
+                                <div className="item" key={index}>
+                                    <div className="colum">{index}</div>
+                                    <div className="colum">{item.userCode}</div>
+                                    <div className="colum">{item.userName}</div>
+                                    <div className="colum">
+                                        <input type="checkbox" checked={item.status} />
+                                    </div>
+                                    <div className="colum">
+                                        <div className="btn">Lưu</div>
+                                    </div>
+                                </div>
+                            ))}
                     </div>
                 </div>
             </div>

@@ -5,7 +5,15 @@ import { useState } from 'react';
 
 function Teacher() {
     // Tình trạng chọn list: danh sách lớp đang dạy trong kỳ, detail: chi tiết 1 lớp
-    const [options, setOptions] = useState('detail');
+    const [options, setOptions] = useState('list');
+
+    // Thông tin lớp chi tiết (truyền vào detail)
+    const [classObj, setClassObj] = useState({});
+
+    const handleSetOptions = (option, classObjNew) => {
+        setClassObj(classObjNew);
+        setOptions(option);
+    };
 
     return (
         <>
@@ -33,8 +41,8 @@ function Teacher() {
                         <div className="current-time">Tuần 35 (Tuần học thứ 11): 29/05 - 03/06 </div>
                     </div>
                 </div>
-                {options === 'list' && <ClassList />}
-                {options === 'detail' && <Detail />}
+                {options === 'list' && <ClassList handleSetOptions={handleSetOptions} />}
+                {options === 'detail' && <Detail classObj={classObj} />}
             </div>
         </>
     );

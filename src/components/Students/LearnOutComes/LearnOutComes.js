@@ -3,6 +3,8 @@ import useFetch from '../../../hooks/useFetch';
 function LearnOutComes({ formatTime }) {
     const { listData: listClass, loading } = useFetch('http://localhost:8080/student/subjects-student');
 
+    console.log(listClass);
+
     return (
         <>
             <div className="learn-outcomes">

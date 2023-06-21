@@ -1,31 +1,33 @@
+import useFetch from '../../../hooks/useFetch';
 import './ClassList.scss';
+import { formatTime } from '../../../functionCusom/functionCusom.js';
 
-function ClassList() {
+function ClassList({ handleSetOptions }) {
+    const { listData: listclass, loading } = useFetch('http://localhost:8080/teacher/all-class');
+
     return (
         <>
             <div className="class-list">
                 <div className="title">Các lớp học trong kỳ:</div>
                 <div className="class-items">
-                    <div className="item">
-                        <div className="subject-name">142939 - Tư tưởng Hồ Chí Minh - SSH11151</div>
-                        <div className="learning-day">Thứ 2</div>
-                        <div className="learning-time">Thời gian: 6h45 - 10h15</div>
-                    </div>
-                    <div className="item">
-                        <div className="subject-name">142939 - Tư tưởng Hồ Chí Minh - SSH11151</div>
-                        <div className="learning-day">Thứ 2</div>
-                        <div className="learning-time">Thời gian: 6h45 - 10h15</div>
-                    </div>
-                    <div className="item">
-                        <div className="subject-name">142939 - Tư tưởng Hồ Chí Minh - SSH11151</div>
-                        <div className="learning-day">Thứ 2</div>
-                        <div className="learning-time">Thời gian: 6h45 - 10h15</div>
-                    </div>
-                    <div className="item">
-                        <div className="subject-name">142939 - Tư tưởng Hồ Chí Minh - SSH11151</div>
-                        <div className="learning-day">Thứ 2</div>
-                        <div className="learning-time">Thời gian: 6h45 - 10h15</div>
-                    </div>
+                    {loading === 2 &&
+                        listclass.map((classObj, index) => (
+                            <div
+                                className="item"
+                                key={index}
+                                onClick={() => {
+                                    handleSetOptions('detail', classObj);
+                                }}
+                            >
+                                <div className="subject-name">
+                                    {classObj.classCode} - {classObj.termName} - {classObj.termCode}
+                                </div>
+                                <div className="learning-day">Thứ {classObj.day}</div>
+                                <div className="learning-time">
+                                    Thời gian: {formatTime(classObj.startTime)} - {formatTime(classObj.endTime)}
+                                </div>
+                            </div>
+                        ))}
                 </div>
             </div>
         </>

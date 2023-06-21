@@ -4,8 +4,7 @@ import LearnOutComes from '../../components/Students/LearnOutComes/LearnOutComes
 import Notification from '../../components/Students/Notification/Notification';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Nav from '../../components/Nav/Nav';
-import { useEffect, useState } from 'react';
-import useFetch from '../../hooks/useFetch';
+import { useEffect } from 'react';
 
 function Student() {
     useEffect(() => {}, []);
