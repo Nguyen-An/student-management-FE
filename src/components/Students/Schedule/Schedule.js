@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import InforClass from '../InforClass/InforClass';
 import axios from 'axios';
-import { formatTime } from '../../../functionCusom/functionCusom.js';
+import { formatTime } from '../../../utils/functionCusom/functionCusom.js';
 
 function Schedule() {
     // Các chỉ mục trang web (1: thời khóa biểu, 2: popup, 3: chi tiết 1 lớp)

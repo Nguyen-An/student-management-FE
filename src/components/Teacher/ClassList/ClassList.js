@@ -1,6 +1,6 @@
 import useFetch from '../../../hooks/useFetch';
 import './ClassList.scss';
-import { formatTime } from '../../../functionCusom/functionCusom.js';
+import { formatTime } from '../../../utils/functionCusom/functionCusom.js';
 
 function ClassList({ handleSetOptions }) {
     const { listData: listclass, loading } = useFetch('http://localhost:8080/teacher/all-class');

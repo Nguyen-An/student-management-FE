@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import PopupAttendance from '../PopupAttendance/PopupAttendance';
 import useFetch from '../../../hooks/useFetch';
 import {
@@ -7,10 +7,14 @@ import {
     getLocation,
     checkTime,
     isWithin100m,
-} from '../../../functionCusom/functionCusom.js';
+} from '../../../utils/functionCusom/functionCusom.js';
 import axios from 'axios';
+import { ToastMessageContext } from '../../../context/ToastMessageContext';
+import PopupQuiz from './PopupQuiz';
 
 function InforClass({ classSelect }) {
+    const context = useContext(ToastMessageContext);
+
     // Trạng thái popup khi ấn điểm danh
     const [statusPopup, setStatusPopup] = useState(false);
     const [isActiveAttendance, setIsActiveAttendance] = useState(false);
@@ -123,6 +127,10 @@ function InforClass({ classSelect }) {
         }
     };
 
+    const demo = () => {
+        context.handleToastMessage('error', 'Abc', 'ádasdasd');
+    };
+
     // Thay đổi trang thái khi bấm điểm danh hoặc tắt thông báo
     const changePopupMessage = () => {
         setStatusPopup(!statusPopup);
@@ -152,7 +160,9 @@ function InforClass({ classSelect }) {
                             >
                                 Điểm danh
                             </div>
-                            <div className="btn ">Bài tập</div>
+                            <div className="btn " onClick={demo}>
+                                Bài tập
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -163,6 +173,8 @@ function InforClass({ classSelect }) {
                     <PopupAttendance changePopupMessage={changePopupMessage} />
                 </div>
             )}
+
+            <PopupQuiz />
         </>
     );
 }

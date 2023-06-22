@@ -1,9 +1,10 @@
 import ListStudent from '../ListStudent/ListStudent';
 import './ClassInformation.scss';
-import { formatTime } from '../../../functionCusom/functionCusom.js';
+import { formatTime } from '../../../utils/functionCusom/functionCusom.js';
 import useFetch from '../../../hooks/useFetch';
 import PopUpCreateAttendanceCode from './PopUpCreateAttendanceCode';
 import { useState } from 'react';
+import PopUpCreateQuiz from './PopUpCreateQuiz';
 
 function ClassInformation({ classObj }) {
     // Hiển thị các popup (0: không hiển thị, 1: popup thêm mới điển danh, 2: thêm mới bài quiz))
@@ -42,6 +43,7 @@ function ClassInformation({ classObj }) {
                     </div>
                     <ListStudent listStudent={listStudent} loading={loading} />
                     {isPopUp === 1 && <PopUpCreateAttendanceCode handlePopUp={handlePopUp} classObj={classObj} />}
+                    <PopUpCreateQuiz />
                 </>
             )}
         </>

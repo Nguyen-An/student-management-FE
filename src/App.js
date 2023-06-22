@@ -4,16 +4,18 @@ import './App.scss';
 import Login from './views/Login/Login.js';
 import Student from './views/Student/Student.js';
 import Teacher from './views/Teacher/Teacher.js';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import ToastMessage from './components/ToastMessage/ToastMessage';
+import { ToastMessageContext } from './context/ToastMessageContext.js';
 
 function App() {
     const [status, setStatus] = useState('login');
-    const [isToastMessage, setIsToastMessage] = useState(true);
 
     const handleLogin = (newStatus) => {
         setStatus(newStatus);
     };
+
+    const context = useContext(ToastMessageContext);
 
     useEffect(() => {
         try {
@@ -45,7 +47,7 @@ function App() {
             {status === 'login' && <Login handleLogin={handleLogin} />}
             {status === 'student' && <Student />}
             {status === 'teacher' && <Teacher />}
-            {isToastMessage && <ToastMessage />}
+            {context.isToastMessage && <ToastMessage />}
         </div>
     );
 }

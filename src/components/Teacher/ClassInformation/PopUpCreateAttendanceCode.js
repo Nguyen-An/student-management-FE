@@ -1,8 +1,8 @@
 import { AiOutlineClose } from 'react-icons/ai';
-import { checkLession } from '../../../functionCusom/functionCusom.js';
+import { checkLession } from '../../../utils/functionCusom/functionCusom.js';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { getLocation } from '../../../functionCusom/functionCusom.js';
+import { getLocation } from '../../../utils/functionCusom/functionCusom.js';
 
 function PopUpCreateAttendanceCode({ handlePopUp, classObj }) {
     const [location, setLocation] = useState({

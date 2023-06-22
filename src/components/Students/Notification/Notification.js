@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import CreateNotification from './CreateNotification';
 import axios from 'axios';
 import useFetch from '../../../hooks/useFetch';
-import { formatDate } from '../../../functionCusom/functionCusom.js';
+import { formatDate } from '../../../utils/functionCusom/functionCusom.js';
 
 function Notification({ teacher = false }) {
     // Danh sách các môn học mà học sinh học trong kỳ

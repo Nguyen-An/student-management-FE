@@ -1,15 +1,11 @@
 import { AiOutlineCheckCircle, AiOutlineCloseCircle, AiOutlineExclamationCircle } from 'react-icons/ai';
 import './ToastMessage.scss';
-import { useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { ToastMessageContext } from '../../context/ToastMessageContext';
 
 function ToastMessage() {
-    const [role, setRole] = useState({
-        type: 'warning',
-        title: 'Cảnh báo',
-        text: 'Đang xuất hiện cảnh báo',
-        icon: <AiOutlineExclamationCircle className="icon" />,
-        backgroundColor: '#ed991d',
-    });
+    const [role, setRole] = useState();
+    const context = useContext(ToastMessageContext);
 
     const roles = [
         {
@@ -35,15 +31,27 @@ function ToastMessage() {
         },
     ];
 
+    useEffect(() => {
+        try {
+            const roleDemo = roles.find((role) => role.type === context.propToastMessage.typeMes);
+            roleDemo.title = context.propToastMessage.titleMes;
+            roleDemo.title = context.propToastMessage.textMes;
+
+            setRole(roleDemo);
+        } catch (error) {}
+    }, []);
+
     return (
         <>
-            <div className="toast-message" style={{ backgroundColor: role.backgroundColor }}>
-                {role.icon}
-                <div className="content">
-                    <div className="title">{role.title}</div>
-                    <div className="text">{role.text}</div>
+            {role && (
+                <div className="toast-message" style={{ backgroundColor: role.backgroundColor }}>
+                    {role.icon}
+                    <div className="content">
+                        <div className="title">{role.title}</div>
+                        <div className="text">{role.text}</div>
+                    </div>
                 </div>
-            </div>
+            )}
         </>
     );
 }
